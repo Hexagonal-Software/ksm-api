@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"os/signal"
 
 	"github.com/spf13/cobra"
 	"hexagonal.software/ksm-api/internal/app"
 	"hexagonal.software/ksm-api/internal/config"
+	"hexagonal.software/ksm-api/internal/logging"
+	"hexagonal.software/ksm-api/internal/version"
 )
 
 var serverCmd = &cobra.Command{
@@ -16,9 +17,11 @@ var serverCmd = &cobra.Command{
 	Short: "Starts the API server",
 	Run: func(cmd *cobra.Command, args []string) {
 		app := app.NewApplication(config.Conf)
+		logging.Log.Info("Version: ", version.Version)
 
 		if err := app.Bootstrap(); err != nil {
-			log.Fatal(err)
+			logging.Log.Fatal(err)
+			os.Exit(1)
 		}
 
 		c := make(chan os.Signal, 1)
@@ -30,7 +33,7 @@ var serverCmd = &cobra.Command{
 		}()
 
 		if err := app.RunServer(); err != nil {
-			log.Fatal(err)
+			logging.Log.Fatal(err)
 		}
 	},
 }

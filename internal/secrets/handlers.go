@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/gofiber/fiber/v2"
+	"hexagonal.software/ksm-api/internal/logging"
 )
 
 var (
@@ -16,8 +17,10 @@ func GetSecretByNotation() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		notation := fmt.Sprintf("keeper://%s/%s/%s", c.Params("record"), c.Params("type"), c.Params("query"))
 		secret, err := GetKsmEngine().GetNotation(notation)
+		logging.Log.Debug("Secret: ", secret, " Error: ", err, " Query: ", notation)
 
 		if err != nil {
+			logging.Log.Debug("Error: ", err)
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 				"status": "error",
 				"error":  ErrRetrieveSecret.Error(),

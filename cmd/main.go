@@ -9,10 +9,12 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"hexagonal.software/ksm-api/internal/config"
+	"hexagonal.software/ksm-api/internal/logging"
 )
 
 var (
-	cfgFile string
+	cfgFile  string
+	LogLevel int
 )
 
 func main() {
@@ -30,6 +32,7 @@ var rootCmd = &cobra.Command{
 		if err != nil {
 			log.Fatal("unable to decode into struct, %v", err)
 		}
+		logging.NewLogger(LogLevel)
 	},
 }
 
@@ -47,6 +50,7 @@ func init() {
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "__", "-", "_"))
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "ksmapi.yaml", "Use specific config file")
+	rootCmd.PersistentFlags().IntVar(&LogLevel, "log-level", int(log.LevelError), "Use debug mode")
 }
 
 // initConfig reads in config file and ENV variables if set.
