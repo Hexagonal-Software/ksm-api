@@ -5,7 +5,7 @@ GOCLEAN=$(GOCMD) clean
 GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
 GOLIST=$(GOCMD) list
-BINARY_NAME=echoconfirm
+BINARY_NAME=ksmapi
 PKGS=$(shell ${GOLIST} ./... | grep -v /vendor)
 COVERAGEDIR=./dist/coverage
 TAG=$(shell git describe --tags --always --dirty)
@@ -28,6 +28,7 @@ test-coverage:
 
 .PHONY: build
 build:
+	@if [ ! -f 'dist/.ksmapi.yaml' ]; then cp configs/ksmapi.yaml dist/ksmapi.yaml; fi;
 	CGO_ENABLED=0 $(GOBUILD) -ldflags="-extldflags=-static -X hexagonal.software/ksm-api/internal/version.Version=${TAG}" -o dist/$(BINARY_NAME) cmd/*.go
 
 .PHONY: clean
@@ -36,6 +37,6 @@ clean:
 
 .PHONY: release-docker
 release-docker:
-	@if [ ! -f '.ksmapi.build.yaml' ]; then echo ">>> Missing .ksmapi.build.yaml" && exit 1; fi;
-	DOCKER_BUILDKIT=1 docker build --target PROD -f scripts/docker/Dockerfile ${OPTS} --build-arg VERSION=${TAG} --tag ${REPO}:${TAG} .
+	@if [ ! -f 'dist/ksmapi.yaml' ]; then cp configs/ksmapi.yaml dist/ksmapi.yaml; fi;
+	DOCKER_BUILDKIT=1 docker build --target PROD -f scripts/docker/Dockerfile ${OPTS} --build-arg APPVERSION=${TAG} --tag ${REPO}:${TAG} .
 	@echo ">>> Docker image built: ${REPO}:${TAG}"
