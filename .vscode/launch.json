@@ -10,8 +10,9 @@
             "args": ["--config", "${workspaceFolder}/configs/ksmapi.yaml", "server", "--log-level=1"],
             "cwd": "${workspaceFolder}",
             "env": {
-                "KSM_CONFIG": ""
-            }
+
+            },
+            "envFile": "${workspaceFolder}/.env",
         }
     ]
 }
