@@ -23,6 +23,7 @@ LABEL org.opencontainers.image.maintainer="Denis Rendler <connect@rendler.net>" 
 
 COPY --from=build_ksmapi /project/dist/ksmapi /ksmapi/ksmapi
 COPY --from=build_ksmapi /project/dist/ksmapi.yaml /ksmapi/ksmapi.yaml
+COPY --from=build_ksmapi /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
 WORKDIR /ksmapi
 
