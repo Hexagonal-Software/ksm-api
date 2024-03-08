@@ -30,6 +30,7 @@ func (s *Server) InitServer() error {
 		AppName:              "KSM-API",
 		CompressedFileSuffix: ".gz",
 		EnablePrintRoutes:    false,
+		DisableKeepalive:     true,
 
 		// Override default error handler
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
