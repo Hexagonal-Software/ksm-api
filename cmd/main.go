@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"strings"
 
+	"github.com/gofiber/fiber/v2/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"hexagonal.software/ksm-api/internal/config"
@@ -56,7 +56,7 @@ func initConfig() {
 		viper.SetConfigFile(cfgFile)
 	} else {
 		viper.AddConfigPath(".")
-		viper.SetConfigName(".ksmapi")
+		viper.SetConfigName("ksmapi")
 		viper.SetConfigType("yaml")
 	}
 
@@ -66,7 +66,7 @@ func initConfig() {
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
 		// message := fmt.Sprintf("Using config file: %s", viper.ConfigFileUsed())
-		// logs.Info(message)
+		// log.Info(message)
 		return
 	}
 }
