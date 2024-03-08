@@ -24,13 +24,12 @@ func NewServer(c *config.Server) *Server {
 func (s *Server) InitServer() error {
 	app := fiber.New(fiber.Config{
 		// Override default configuration
-		ServerHeader:          "KSM-API",
-		StrictRouting:         true,
-		CaseSensitive:         true,
-		AppName:               "KSM-API",
-		CompressedFileSuffix:  ".gz",
-		EnablePrintRoutes:     false,
-		DisableStartupMessage: true,
+		ServerHeader:         "KSM-API",
+		StrictRouting:        true,
+		CaseSensitive:        true,
+		AppName:              "KSM-API",
+		CompressedFileSuffix: ".gz",
+		EnablePrintRoutes:    false,
 
 		// Override default error handler
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
