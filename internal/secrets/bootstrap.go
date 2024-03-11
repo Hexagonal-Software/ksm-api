@@ -3,6 +3,7 @@ package secrets
 import (
 	"errors"
 
+	"github.com/gofiber/fiber/v2"
 	ksm "github.com/keeper-security/secrets-manager-go/core"
 	"hexagonal.software/ksm-api/internal/config"
 )
@@ -49,4 +50,13 @@ func GetKsmEngine(c ...string) *ksm.SecretsManager {
 	}
 
 	return KsmEngine
+}
+
+func GetFromContext(c *fiber.Ctx) *ksm.SecretsManager {
+	ksmEngine, ok := c.Locals("KSM_ENGINE").(*ksm.SecretsManager) // Type assertion
+	if !ok {
+		ksmEngine = GetKsmEngine()
+	}
+
+	return ksmEngine
 }

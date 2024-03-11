@@ -39,7 +39,7 @@ func (s *Server) InitServer() error {
 				code = e.Code
 			}
 			return c.Status(code).JSON(fiber.Map{
-				"status": "error",
+				"status": "there is an error with your request",
 			})
 		},
 	})
@@ -69,5 +69,5 @@ func registerRoutes(app *fiber.App) {
 		})
 	})
 
-	app.Get("/api/v1/secret/:record/:type/:query", secrets.GetSecretByNotation())
+	app.Use(secrets.NewKsmEngineFromConfig()).Get("/api/v1/secret/:record/:type/:query", secrets.GetSecretByNotation())
 }
